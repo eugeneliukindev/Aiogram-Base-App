@@ -1,19 +1,15 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
 from app.utils.constants import LOG_DATE_FORMAT, LOG_DEFAULT_FORMAT
-
-if TYPE_CHECKING:
-    from app.utils.types import LogLevelType
+from app.utils.types import LogLevelType
 
 
 class BotConfig(BaseModel):
-    BOT_TOKEN: str
+    token: str
 
 
 class DatabaseConfig(BaseModel):
@@ -74,9 +70,10 @@ class Settings(BaseSettings):
         env_prefix="APP_CONFIG__",
     )
     db: DatabaseConfig
-    bot: BotConfig = BotConfig()
-    redis: RedisConfig = RedisConfig()
-    logging: LoggingConfig = LoggingConfig()
+    bot: BotConfig
+    redis: RedisConfig
+    logging: LoggingConfig
 
 
 settings = Settings()
+print(settings)
