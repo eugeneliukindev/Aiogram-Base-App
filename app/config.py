@@ -51,6 +51,11 @@ class DatabaseConfig(BaseModel):
     }
 
 
+class RedisConfig(BaseModel):
+    host: str = "localhost"
+    port: int = 6379
+
+
 class LoggingConfig(BaseModel):
     level: LogLevelType = "INFO"
     log_format: str = LOG_DEFAULT_FORMAT
@@ -70,6 +75,7 @@ class Settings(BaseSettings):
     )
     db: DatabaseConfig
     bot: BotConfig = BotConfig()
+    redis: RedisConfig = RedisConfig()
     logging: LoggingConfig = LoggingConfig()
 
 
