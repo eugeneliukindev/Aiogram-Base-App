@@ -12,6 +12,10 @@ if TYPE_CHECKING:
     from app.utils.types import LogLevelType
 
 
+class BotConfig(BaseModel):
+    BOT_TOKEN: str
+
+
 class DatabaseConfig(BaseModel):
     # .env
     driver: str = "postgresql+asyncpg"
@@ -65,6 +69,7 @@ class Settings(BaseSettings):
         env_prefix="APP_CONFIG__",
     )
     db: DatabaseConfig
+    bot: BotConfig = BotConfig()
     logging: LoggingConfig = LoggingConfig()
 
 
