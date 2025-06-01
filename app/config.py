@@ -1,6 +1,15 @@
-from pydantic import BaseModel
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
+from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
+
+from app.utils.constants import LOG_DATE_FORMAT, LOG_DEFAULT_FORMAT
+
+if TYPE_CHECKING:
+    from app.utils.types import LogLevelType
 
 
 class DatabaseConfig(BaseModel):
@@ -38,6 +47,16 @@ class DatabaseConfig(BaseModel):
     }
 
 
+class LoggingConfig(BaseModel):
+    level: LogLevelType = "INFO"
+    log_format: str = LOG_DEFAULT_FORMAT
+    datefmt: str = LOG_DATE_FORMAT
+
+    @field_validator("level", mode="before")
+    def validate_log_level(cls, v: Any) -> LogLevelType | Any:
+        return v.upper() if isinstance(v, str) else v
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(".env-template", ".env"),
@@ -46,6 +65,7 @@ class Settings(BaseSettings):
         env_prefix="APP_CONFIG__",
     )
     db: DatabaseConfig
+    logging: LoggingConfig = LoggingConfig()
 
 
 settings = Settings()
