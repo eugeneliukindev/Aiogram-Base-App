@@ -1,3 +1,3 @@
-from .session_dep_middleware import SessionDepMiddleware
+from .session_dep import SessionDepMiddleware
 
 __all__ = ("SessionDepMiddleware",)
