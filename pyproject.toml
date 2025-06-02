@@ -22,6 +22,8 @@ pre-commit = "^4.2.0"
 strict = true
 warn_unreachable = true
 enable_error_code = true
+strict_bytes = true
+local_partial_types = true
 plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]
 
 [tool.ruff]
