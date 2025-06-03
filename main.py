@@ -7,6 +7,7 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.redis import RedisStorage
 
 from app.config import settings
+from app.handlers.commands import router as commands_router
 from app.middlewares import SessionDepMiddleware
 from app.utils.logger import configure_logging
 
@@ -23,6 +24,8 @@ async def main(
     storage = RedisStorage(redis=redis)
 
     dp = Dispatcher(storage=storage)
+
+    dp.include_routers(commands_router)
 
     dp.update.outer_middleware.register(SessionDepMiddleware())
 
