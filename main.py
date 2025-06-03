@@ -7,9 +7,14 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.redis import RedisStorage
 
 from app.config import settings
+from app.core import db_manager
 from app.handlers.commands import router as commands_router
 from app.middlewares import SessionDepMiddleware
 from app.utils.logger import configure_logging
+
+
+async def on_shutdown(bot: Bot):
+    await db_manager.dispose()
 
 
 async def main(
@@ -24,6 +29,7 @@ async def main(
     storage = RedisStorage(redis=redis)
 
     dp = Dispatcher(storage=storage)
+    dp.shutdown.register(on_shutdown)
 
     dp.include_routers(commands_router)
 
