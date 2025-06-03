@@ -9,11 +9,11 @@ import aiofiles
 from app.utils.enum import LanguageEnum
 
 if TYPE_CHECKING:
-    from typing import Any
+    from typing import Any, Final
 
-ROOT_DIR = Path(__file__).parent.parent.parent
+ROOT_DIR: Final[Path] = Path(__file__).parent.parent.parent
 
-TEXTS_DIR = ROOT_DIR / "texts"
+TEXTS_DIR: Final[Path] = ROOT_DIR / "texts"
 
 
 async def load_json_text(lang: LanguageEnum = LanguageEnum.EN) -> Any:
