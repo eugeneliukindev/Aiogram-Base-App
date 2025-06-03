@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import inspect
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, get_type_hints
 
 from aiogram import BaseMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -27,8 +27,9 @@ class SessionDepMiddleware(BaseMiddleware):
         data: dict[str, Any],
     ) -> Any:
         signature = inspect.signature(handler)
+        type_hints = get_type_hints(handler)  # inspect.get_annotations(eval_str=True)
         for name, parameter in signature.parameters.items():
-            if parameter.annotation is AsyncSession and parameter.default is inspect.Parameter.empty:
+            if type_hints[name] is AsyncSession and parameter.default is inspect.Parameter.empty:
                 async with self.session_factory() as session:
                     data[name] = session
                     try:
