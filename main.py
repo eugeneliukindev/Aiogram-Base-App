@@ -13,7 +13,7 @@ from app.middlewares import SessionDepMiddleware
 from app.utils.logger import configure_logging
 
 
-async def on_shutdown(bot: Bot):
+async def on_shutdown(bot: Bot) -> None:
     await db_manager.dispose()
 
 
