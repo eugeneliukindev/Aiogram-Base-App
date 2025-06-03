@@ -20,6 +20,7 @@ class UserRepository(AbstractRepository[UserOrm, UserCreateS, UserUpdateS]):
     async def create(cls, session: AsyncSession, schema: UserCreateS) -> UserOrm:
         user = UserOrm(**schema.model_dump())
         session.add(user)
+        await session.commit()
         await session.refresh(user)
         return user
 
