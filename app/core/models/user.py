@@ -1,15 +1,8 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 from sqlalchemy import BigInteger, Boolean, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.models.base import BaseOrm
 from app.core.models.mixins import TimestampMixin
-
-if TYPE_CHECKING:
-    from sqlalchemy.orm import Mapped
 
 
 class UserOrm(BaseOrm, TimestampMixin):
