@@ -6,16 +6,24 @@ services:
       POSTGRES_DB: ${APP_CONFIG__DB__NAME}
       POSTGRES_USER: ${APP_CONFIG__DB__USER}
       POSTGRES_PASSWORD: ${APP_CONFIG__DB__PASSWORD}
-      PGDATA: /var/lib/postgresql/data
     ports:
       - ${APP_CONFIG__DB__PORT}:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 5s
       timeout: 3s
       retries: 3
 
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    ports:
+      - ${APP_CONFIG__REDIS__PORT}:6379
+    volumes:
+      - redis_data:/bitnami/redis/data
+
 volumes:
-  pgdata:
+  pg_data:
+  redis_data:
