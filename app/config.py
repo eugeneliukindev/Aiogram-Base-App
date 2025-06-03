@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
 from app.utils.constants import LOG_DATE_FORMAT, LOG_DEFAULT_FORMAT
-from app.utils.types import LogLevelType
+from app.utils.types import LogLevelEnum
 
 
 class BotConfig(BaseModel):
@@ -53,12 +53,12 @@ class RedisConfig(BaseModel):
 
 
 class LoggingConfig(BaseModel):
-    level: LogLevelType = "INFO"
+    level: LogLevelEnum = LogLevelEnum.CRITICAL
     log_format: str = LOG_DEFAULT_FORMAT
     datefmt: str = LOG_DATE_FORMAT
 
     @field_validator("level", mode="before")
-    def validate_log_level(cls, v: Any) -> LogLevelType | Any:
+    def validate_log_level(cls, v: Any) -> LogLevelEnum | Any:
         return v.upper() if isinstance(v, str) else v
 
 

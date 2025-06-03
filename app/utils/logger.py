@@ -6,11 +6,11 @@ from typing import TYPE_CHECKING
 from app.config import settings
 
 if TYPE_CHECKING:
-    from app.utils.types import LogLevelType
+    from app.utils.types import LogLevelEnum
 
 
 def configure_logging(
-    level: LogLevelType = settings.logging.level,
+    level: LogLevelEnum = settings.logging.level,
     format_: str = settings.logging.log_format,
     datefmt: str = settings.logging.datefmt,
 ) -> None:

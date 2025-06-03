@@ -1,3 +1,9 @@
-from typing import Literal
+from enum import StrEnum
 
-type LogLevelType = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+
+class LogLevelEnum(StrEnum):
+    DEBUG = "DEBUG"
+    INFO = "INFO"
+    WARNING = "WARNING"
+    ERROR = "ERROR"
+    CRITICAL = "CRITICAL"

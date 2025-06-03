@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 from sqlalchemy import delete, select, update
 
 from app.core.models import UserOrm
-from app.core.schemas.user import UserCreateS, UserUpdateS
 from app.repository import AbstractRepository
 
 if TYPE_CHECKING:
@@ -13,6 +12,8 @@ if TYPE_CHECKING:
 
     from sqlalchemy import Result
     from sqlalchemy.ext.asyncio import AsyncSession
+
+    from app.core.schemas.user import UserCreateS, UserUpdateS
 
 
 class UserRepository(AbstractRepository[UserOrm, UserCreateS, UserUpdateS]):

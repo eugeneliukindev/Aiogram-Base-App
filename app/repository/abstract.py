@@ -1,16 +1,15 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
-from pydantic import BaseModel
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from app.core.models import BaseOrm
-
 if TYPE_CHECKING:
-    pass
+    from collections.abc import Sequence
+
+    from pydantic import BaseModel
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    from app.core.models import BaseOrm
 
 
 class AbstractRepository[M: BaseOrm, CreateS: BaseModel, UpdateS: BaseModel](ABC):
