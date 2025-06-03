@@ -27,19 +27,19 @@ class UserRepository(AbstractRepository[UserOrm, UserCreateS, UserUpdateS]):
     @classmethod
     async def get_by_id(cls, session: AsyncSession, id_: int) -> UserOrm | None:
         query = select(UserOrm).where(UserOrm.id == id_)
-        result = await session.execute(query)
+        result: Result[tuple[UserOrm]] = await session.execute(query)
         return result.scalars().one_or_none()
 
     @classmethod
     async def get_by_tg_id(cls, session: AsyncSession, tg_id: int) -> UserOrm | None:
         query = select(UserOrm).where(UserOrm.tg_id == tg_id)
-        result: Result = await session.execute(query)
+        result: Result[tuple[UserOrm]] = await session.execute(query)
         return result.scalars().one_or_none()
 
     @classmethod
     async def get_all(cls, session: AsyncSession) -> Sequence[UserOrm]:
         query = select(UserOrm)
-        result: Result = await session.execute(query)
+        result: Result[tuple[UserOrm]] = await session.execute(query)
         return result.scalars().all()
 
     @classmethod
@@ -47,7 +47,7 @@ class UserRepository(AbstractRepository[UserOrm, UserCreateS, UserUpdateS]):
         stmt = (
             update(UserOrm).where(UserOrm.id == id_).values(**schema.model_dump(exclude_unset=True)).returning(UserOrm)
         )
-        result: Result = await session.execute(stmt)
+        result: Result[tuple[UserOrm]] = await session.execute(stmt)
         return result.scalars().one_or_none()
 
     @classmethod
@@ -58,17 +58,17 @@ class UserRepository(AbstractRepository[UserOrm, UserCreateS, UserUpdateS]):
             .values(**schema.model_dump(exclude_unset=True))
             .returning(UserOrm)
         )
-        result: Result = await session.execute(stmt)
+        result: Result[tuple[UserOrm]] = await session.execute(stmt)
         return result.scalars().one_or_none()
 
     @classmethod
     async def delete_by_id(cls, session: AsyncSession, id_: int) -> UserOrm | None:
         stmt = delete(UserOrm).where(UserOrm.id == id_).returning(UserOrm)
-        result: Result = await session.execute(stmt)
+        result: Result[tuple[UserOrm]] = await session.execute(stmt)
         return result.scalars().one_or_none()
 
     @classmethod
     async def delete_by_tg_id(cls, session: AsyncSession, tg_id: int) -> UserOrm | None:
         stmt = delete(UserOrm).where(UserOrm.tg_id == tg_id).returning(UserOrm)
-        result: Result = await session.execute(stmt)
+        result: Result[tuple[UserOrm]] = await session.execute(stmt)
         return result.scalars().one_or_none()

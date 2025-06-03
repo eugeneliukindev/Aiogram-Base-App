@@ -4,7 +4,6 @@ import inspect
 from typing import TYPE_CHECKING
 
 from aiogram import BaseMiddleware
-from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db_manager import db_manager
@@ -13,6 +12,7 @@ if TYPE_CHECKING:
     from collections.abc import Awaitable
     from typing import Any, Callable
 
+    from aiogram.types import TelegramObject
     from sqlalchemy.ext.asyncio import async_sessionmaker
 
 
@@ -22,8 +22,8 @@ class SessionDepMiddleware(BaseMiddleware):
 
     async def __call__(
         self,
-        handler: Callable[[Message, dict[str, Any]], Awaitable[Any]],
-        event: Message,
+        handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
         signature = inspect.signature(handler)
