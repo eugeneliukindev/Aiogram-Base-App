@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING
 from aiogram import Router
 from aiogram.filters import CommandStart
 
-from app.config import texts
 from app.core.schemas import UserCreateS
 from app.repository.user import UserRepository
+from app.utils.texts import load_texts
 
 if TYPE_CHECKING:
     from aiogram.types import Message
@@ -32,4 +32,5 @@ async def command_start_handler(message: Message, session: AsyncSession) -> None
         session=session,
         schema=create_schema,
     )
-    await message.reply(texts.welcome_message.read_text())
+    welcome_message: str = (await load_texts())["welcome_message"]
+    await message.reply(welcome_message.format(fullname=message.from_user.full_name))
