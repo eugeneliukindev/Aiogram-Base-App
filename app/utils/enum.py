@@ -7,3 +7,7 @@ class LogLevelEnum(StrEnum):
     WARNING = "WARNING"
     ERROR = "ERROR"
     CRITICAL = "CRITICAL"
+
+
+class LanguageEnum(StrEnum):
+    EN = "en"

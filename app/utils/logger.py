@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from app.config import settings
 
 if TYPE_CHECKING:
-    from app.utils.types import LogLevelEnum
+    from app.utils.enum import LogLevelEnum
 
 
 def configure_logging(
