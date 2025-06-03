@@ -1,14 +1,13 @@
-from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
-from app.utils.constants import LOG_DATE_FORMAT, LOG_DEFAULT_FORMAT
-from app.utils.types import LogLevelEnum
+from app.utils.enum import LogLevelEnum
 
-ROOT_DIR = Path(__file__).parent.parent
+LOG_DEFAULT_FORMAT = "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
+LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 class BotConfig(BaseModel):
@@ -56,7 +55,7 @@ class RedisConfig(BaseModel):
 
 
 class LoggingConfig(BaseModel):
-    level: LogLevelEnum = LogLevelEnum.CRITICAL
+    level: LogLevelEnum = LogLevelEnum.INFO
     log_format: str = LOG_DEFAULT_FORMAT
     datefmt: str = LOG_DATE_FORMAT
 
@@ -78,9 +77,4 @@ class Settings(BaseSettings):
     logging: LoggingConfig
 
 
-class Texts(BaseModel):
-    welcome_message: Path = ROOT_DIR / "texts/welcome-message.txt"
-
-
-texts = Texts()
 settings = Settings()
