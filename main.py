@@ -24,7 +24,7 @@ async def main(
 
     dp = Dispatcher(storage=storage)
 
-    dp.update.outer_middleware(SessionDepMiddleware)
+    dp.update.outer_middleware(SessionDepMiddleware())
 
     await dp.start_polling(bot)
 
