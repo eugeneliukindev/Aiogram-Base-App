@@ -16,7 +16,7 @@ ROOT_DIR = Path(__file__).parent.parent.parent
 TEXTS_DIR = ROOT_DIR / "texts"
 
 
-async def load_texts(lang: LanguageEnum = LanguageEnum.EN) -> dict[str, Any]:
+async def load_json_text(lang: LanguageEnum = LanguageEnum.EN) -> dict[str, Any]:
     async with aiofiles.open(file=TEXTS_DIR / f"{lang}.json", encoding="utf-8") as f:
         text = await f.read()
         return json.loads(text)
