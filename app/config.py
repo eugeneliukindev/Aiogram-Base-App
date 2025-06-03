@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel, field_validator
@@ -6,6 +7,8 @@ from sqlalchemy import URL
 
 from app.utils.constants import LOG_DATE_FORMAT, LOG_DEFAULT_FORMAT
 from app.utils.types import LogLevelEnum
+
+ROOT_DIR = Path(__file__).parent.parent
 
 
 class BotConfig(BaseModel):
@@ -75,4 +78,9 @@ class Settings(BaseSettings):
     logging: LoggingConfig
 
 
+class Texts(BaseModel):
+    welcome_message: Path = ROOT_DIR / "texts/welcome-message.txt"
+
+
+texts = Texts()
 settings = Settings()
