@@ -25,6 +25,13 @@ class BaseRepository[ModelT: BaseOrm, CreateST: BaseModel, UpdateST: BaseModel](
 ):
     model_class: type[ModelT]
 
+    def __init_subclass__(cls, **kwargs):
+        log.debug("Initializing subclass %s", cls.__name__)
+        if not hasattr(cls, "model_class") or cls.model_class is None:
+            log.error("Subclass %s must define a valid model_class", cls.__name__)
+            raise ValueError(f"Subclass {cls.__name__} must define a valid model_class")
+        log.debug("Subclass %s initialized with model_class: %s", cls.__name__, cls.model_class.__name__)
+
     @classmethod
     def _validate_field(cls, field: str) -> None:
         log.debug("Validating field %s for model %s", field, cls.model_class.__name__)
