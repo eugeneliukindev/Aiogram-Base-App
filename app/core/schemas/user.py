@@ -24,8 +24,8 @@ class UserS(BaseModel):
 class UserCreateS(BaseModel):
     tg_id: int
     first_name: str
-    username: str
-    last_name: str
+    username: str | None
+    last_name: str | None
 
 
 class UserUpdateS(BaseModel):
