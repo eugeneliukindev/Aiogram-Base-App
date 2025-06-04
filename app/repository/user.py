@@ -1,74 +1,39 @@
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING
 
-from sqlalchemy import delete, select, update
-
 from app.core.models import UserOrm
-from app.core.schemas.user import UserCreateS, UserUpdateS
-from app.repository import AbstractRepository
+from app.core.schemas import UserCreateS
+from app.core.schemas.user import UserUpdateS
+from app.repository.base import BaseRepository
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
     from sqlalchemy import Result
     from sqlalchemy.ext.asyncio import AsyncSession
 
+log = logging.getLogger(__name__)
 
-class UserRepository(AbstractRepository[UserOrm, UserCreateS, UserUpdateS]):
-    @classmethod
-    async def create(cls, session: AsyncSession, schema: UserCreateS) -> UserOrm:
-        user = UserOrm(**schema.model_dump())
-        session.add(user)
-        await session.commit()
-        await session.refresh(user)
-        return user
 
-    @classmethod
-    async def get_by_id(cls, session: AsyncSession, id_: int) -> UserOrm | None:
-        query = select(UserOrm).where(UserOrm.id == id_)
-        result: Result[tuple[UserOrm]] = await session.execute(query)
-        return result.scalars().one_or_none()
+class UserRepository(BaseRepository[UserOrm, UserCreateS, UserUpdateS]):
+    model_class = UserOrm
 
     @classmethod
     async def get_by_tg_id(cls, session: AsyncSession, tg_id: int) -> UserOrm | None:
-        query = select(UserOrm).where(UserOrm.tg_id == tg_id)
-        result: Result[tuple[UserOrm]] = await session.execute(query)
-        return result.scalars().one_or_none()
-
-    @classmethod
-    async def get_all(cls, session: AsyncSession) -> Sequence[UserOrm]:
-        query = select(UserOrm)
-        result: Result[tuple[UserOrm]] = await session.execute(query)
-        return result.scalars().all()
-
-    @classmethod
-    async def update_by_id(cls, session: AsyncSession, id_: int, schema: UserUpdateS) -> UserOrm | None:
-        stmt = (
-            update(UserOrm).where(UserOrm.id == id_).values(**schema.model_dump(exclude_unset=True)).returning(UserOrm)
-        )
-        result: Result[tuple[UserOrm]] = await session.execute(stmt)
-        return result.scalars().one_or_none()
+        result: Result[tuple[UserOrm, ...]] = await cls._get_by_field(session=session, field="tg_id", value=tg_id)
+        user: UserOrm | None = result.scalars().one_or_none()
+        return user
 
     @classmethod
     async def update_by_tg_id(cls, session: AsyncSession, tg_id: int, schema: UserUpdateS) -> UserOrm | None:
-        stmt = (
-            update(UserOrm)
-            .where(UserOrm.tg_id == tg_id)
-            .values(**schema.model_dump(exclude_unset=True))
-            .returning(UserOrm)
+        result: Result[tuple[UserOrm, ...]] = await cls._update_by_field(
+            session=session, field="tg_id", value=tg_id, update_schema=schema
         )
-        result: Result[tuple[UserOrm]] = await session.execute(stmt)
-        return result.scalars().one_or_none()
-
-    @classmethod
-    async def delete_by_id(cls, session: AsyncSession, id_: int) -> UserOrm | None:
-        stmt = delete(UserOrm).where(UserOrm.id == id_).returning(UserOrm)
-        result: Result[tuple[UserOrm]] = await session.execute(stmt)
-        return result.scalars().one_or_none()
+        updated_user: UserOrm | None = result.scalars().one_or_none()
+        return updated_user
 
     @classmethod
     async def delete_by_tg_id(cls, session: AsyncSession, tg_id: int) -> UserOrm | None:
-        stmt = delete(UserOrm).where(UserOrm.tg_id == tg_id).returning(UserOrm)
-        result: Result[tuple[UserOrm]] = await session.execute(stmt)
-        return result.scalars().one_or_none()
+        result: Result[tuple[UserOrm, ...]] = await cls._delete_by_field(session=session, field="tg_id", value=tg_id)
+        deleted_user: UserOrm | None = result.scalars().one_or_none()
+        return deleted_user
