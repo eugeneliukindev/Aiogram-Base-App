@@ -54,7 +54,7 @@ class BaseRepository[ModelT: BaseOrm, CreateST: BaseModel, UpdateST: BaseModel](
     @classmethod
     async def get_by_id(cls, session: AsyncSession, id_: int) -> ModelT | None:
         log.debug("Fetching %s by id=%d", cls.model_class.__name__, id_)
-        result = await cls._get_by_field(session=session, field="id", value=id_)
+        result: Result[tuple[ModelT, ...]] = await cls._get_by_field(session=session, field="id", value=id_)
         model: ModelT | None = result.scalars().one_or_none()
         log.debug("Fetched %s by id=%d: %r", cls.model_class.__name__, id_, model)
         return model
