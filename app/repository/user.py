@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 
 class UserRepository(BaseRepository[UserOrm, UserCreateS, UserUpdateS]):
-    model_class = UserOrm
+    model_class: type[UserOrm] = UserOrm
 
     @classmethod
     async def get_by_tg_id(cls, session: AsyncSession, tg_id: int) -> UserOrm | None:
@@ -25,9 +25,9 @@ class UserRepository(BaseRepository[UserOrm, UserCreateS, UserUpdateS]):
         return user
 
     @classmethod
-    async def update_by_tg_id(cls, session: AsyncSession, tg_id: int, schema: UserUpdateS) -> UserOrm | None:
+    async def update_by_tg_id(cls, session: AsyncSession, tg_id: int, update_schema: UserUpdateS) -> UserOrm | None:
         result: Result[tuple[UserOrm, ...]] = await cls._update_by_field(
-            session=session, field="tg_id", value=tg_id, update_schema=schema
+            session=session, field="tg_id", value=tg_id, update_schema=update_schema
         )
         updated_user: UserOrm | None = result.scalars().one_or_none()
         return updated_user
