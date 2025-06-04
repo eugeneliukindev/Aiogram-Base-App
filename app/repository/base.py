@@ -25,7 +25,7 @@ class BaseRepository[ModelT: BaseOrm, CreateST: BaseModel, UpdateST: BaseModel](
 ):
     model_class: type[ModelT]
 
-    def __init_subclass__(cls, **kwargs):
+    def __init_subclass__(cls, **kwargs: Any) -> None:
         log.debug("Initializing subclass %s", cls.__name__)
         if not hasattr(cls, "model_class") or cls.model_class is None:
             log.error("Subclass %s must define a valid model_class", cls.__name__)
