@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from aiogram import BaseMiddleware
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db_manager import db_manager
 
@@ -12,7 +11,7 @@ if TYPE_CHECKING:
     from typing import Any, Callable
 
     from aiogram.types import TelegramObject
-    from sqlalchemy.ext.asyncio import async_sessionmaker
+    from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 
 class SessionDepMiddleware(BaseMiddleware):
