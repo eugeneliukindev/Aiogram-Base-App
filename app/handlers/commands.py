@@ -33,7 +33,7 @@ async def command_start_handler(message: Message, session: AsyncSession) -> None
     )
     await UserRepository.create(
         session=session,
-        schema=create_schema,
+        create_schema=create_schema,
     )
     welcome_message: str = json_text["welcome"]
     await message.reply(welcome_message.format(fullname=message.from_user.full_name))
