@@ -22,9 +22,7 @@ class BaseOrm(DeclarativeBase):
 
     @final
     def __repr__(self) -> str:
-        return (
-            f"<{self.__class__.__name__}>"
-            f"({', '.join([f'{k}={v!r}' for k, v in self.__dict__.items() if k != '_sa_instance_state'])})"
-        )
+        cols = (f"{col.name}={getattr(self, col.name)!r}" for col in self.__table__.columns)
+        return f"<{self.__class__.__name__}({', '.join(cols)})>"
 
     __str__ = __repr__
