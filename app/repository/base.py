@@ -55,9 +55,7 @@ class BaseRepository[ModelOrmT: BaseOrm, CreateST: BaseModel, UpdateST: BaseMode
         query = select(cls.model_class).where(getattr(cls.model_class, field) == value)
         result: Result[tuple[ModelOrmT, ...]] = await session.execute(query)
         scalar_result: ScalarResult[ModelOrmT] = result.scalars()
-        log.debug(
-            "Retrieved %d %s record(s) by %s='%s'", len(scalar_result.all()), cls.model_class.__name__, field, value
-        )
+        log.debug("Completed query for %s by %s='%s'", cls.model_class.__name__, field, value)
         return scalar_result
 
     @classmethod
@@ -79,7 +77,7 @@ class BaseRepository[ModelOrmT: BaseOrm, CreateST: BaseModel, UpdateST: BaseMode
         query = select(cls.model_class)
         result: Result[tuple[ModelOrmT, ...]] = await session.execute(query)
         scalar_result: ScalarResult[ModelOrmT] = result.scalars()
-        log.info("Retrieved %d %s records", len(scalar_result.all()), cls.model_class.__name__)
+        log.info("Completed fetching all %s records", cls.model_class.__name__)
         return scalar_result
 
     @classmethod
@@ -87,7 +85,11 @@ class BaseRepository[ModelOrmT: BaseOrm, CreateST: BaseModel, UpdateST: BaseMode
         cls, session: AsyncSession, field: str, value: Any, update_schema: UpdateST, commit: bool = True
     ) -> ScalarResult[ModelOrmT]:
         log.info(
-            "Updating %s by %s='%s' with data: %s", cls.model_class.__name__, field, value, update_schema.model_dump()
+            "Updating %s by %s='%s' with data: %s",
+            cls.model_class.__name__,
+            field,
+            value,
+            update_schema.model_dump(),
         )
         cls._validate_field(field)
         stmt = (
@@ -98,7 +100,7 @@ class BaseRepository[ModelOrmT: BaseOrm, CreateST: BaseModel, UpdateST: BaseMode
         )
         result: Result[tuple[ModelOrmT, ...]] = await session.execute(stmt)
         scalar_result: ScalarResult[ModelOrmT] = result.scalars()
-        log.info("Updated %d %s record(s) by %s='%s'", len(scalar_result.all()), cls.model_class.__name__, field, value)
+        log.info("Completed update for %s by %s='%s'", cls.model_class.__name__, field, value)
 
         if commit:
             await session.commit()
@@ -130,7 +132,7 @@ class BaseRepository[ModelOrmT: BaseOrm, CreateST: BaseModel, UpdateST: BaseMode
         stmt = delete(cls.model_class).where(getattr(cls.model_class, field) == value).returning(cls.model_class)
         result: Result[tuple[ModelOrmT, ...]] = await session.execute(stmt)
         scalar_result: ScalarResult[ModelOrmT] = result.scalars()
-        log.info("Deleted %d %s record(s) by %s='%s'", len(scalar_result.all()), cls.model_class.__name__, field, value)
+        log.info("Completed deletion for %s by %s='%s'", cls.model_class.__name__, field, value)
 
         if commit:
             await session.commit()
