@@ -9,7 +9,7 @@ from app.core.schemas.user import UserUpdateS
 from app.repository.base import BaseRepository
 
 if TYPE_CHECKING:
-    from sqlalchemy import Result
+    from sqlalchemy import ScalarResult
     from sqlalchemy.ext.asyncio import AsyncSession
 
 log = logging.getLogger(__name__)
@@ -20,20 +20,20 @@ class UserRepository(BaseRepository[UserOrm, UserCreateS, UserUpdateS]):
 
     @classmethod
     async def get_by_tg_id(cls, session: AsyncSession, tg_id: int) -> UserOrm | None:
-        result: Result[tuple[UserOrm, ...]] = await cls._get_by_field(session=session, field="tg_id", value=tg_id)
-        user: UserOrm | None = result.scalars().one_or_none()
-        return user
+        scalar_result: ScalarResult[UserOrm] = await cls._get_by_field(session=session, field="tg_id", value=tg_id)
+        user_orm: UserOrm | None = scalar_result.one_or_none()
+        return user_orm
 
     @classmethod
     async def update_by_tg_id(cls, session: AsyncSession, tg_id: int, update_schema: UserUpdateS) -> UserOrm | None:
-        result: Result[tuple[UserOrm, ...]] = await cls._update_by_field(
+        scalar_result: ScalarResult[UserOrm] = await cls._update_by_field(
             session=session, field="tg_id", value=tg_id, update_schema=update_schema
         )
-        updated_user: UserOrm | None = result.scalars().one_or_none()
-        return updated_user
+        updated_user_orm: UserOrm | None = scalar_result.one_or_none()
+        return updated_user_orm
 
     @classmethod
     async def delete_by_tg_id(cls, session: AsyncSession, tg_id: int) -> UserOrm | None:
-        result: Result[tuple[UserOrm, ...]] = await cls._delete_by_field(session=session, field="tg_id", value=tg_id)
-        deleted_user: UserOrm | None = result.scalars().one_or_none()
-        return deleted_user
+        scalar_result: ScalarResult[UserOrm] = await cls._delete_by_field(session=session, field="tg_id", value=tg_id)
+        deleted_user_orm: UserOrm | None = scalar_result.one_or_none()
+        return deleted_user_orm
