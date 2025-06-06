@@ -36,7 +36,7 @@ class BaseRepository[ModelT: BaseOrm, CreateST: BaseModel, UpdateST: BaseModel](
             raise ValueError(msg)
 
     @classmethod
-    async def create(cls, session: AsyncSession, create_schema: CreateST) -> ModelT | None:
+    async def create(cls, session: AsyncSession, create_schema: CreateST) -> None:
         # fmt: off
         stmt = (
             insert(cls.model_class)
