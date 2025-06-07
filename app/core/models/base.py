@@ -1,13 +1,14 @@
 from typing import final
 
 from sqlalchemy import MetaData
+from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
 from app.config import settings
 from app.utils.case_converter import camel_case_to_snake_case
 
 
-class BaseOrm(DeclarativeBase):
+class BaseOrm(AsyncAttrs, DeclarativeBase):
     __abstract__ = True
 
     metadata = MetaData(
