@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from sqlalchemy import NullPool  # noqa
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from app.config import settings
@@ -9,27 +10,14 @@ from app.utils.enum import ModeEnum
 
 if TYPE_CHECKING:
     from collections.abc import AsyncGenerator
+    from typing import Any
 
-    from sqlalchemy import URL
     from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 
 class DatabaseManager:
-    def __init__(
-        self,
-        url: str | URL,
-        echo: bool = False,
-        echo_pool: bool = False,
-        pool_size: int = 5,
-        max_overflow: int = 10,
-    ):
-        self.engine: AsyncEngine = create_async_engine(
-            url=url,
-            echo=echo,
-            echo_pool=echo_pool,
-            pool_size=pool_size,
-            max_overflow=max_overflow,
-        )
+    def __init__(self, **engine_kwargs: Any):
+        self.engine: AsyncEngine = create_async_engine(**engine_kwargs)
         self.session_factory: async_sessionmaker[AsyncSession] = async_sessionmaker(
             bind=self.engine,
             autocommit=False,
@@ -57,8 +45,7 @@ db_mapping = {
         url=settings.db_test.url,
         echo=settings.db_test.echo,
         echo_pool=settings.db_test.echo_pool,
-        pool_size=settings.db_test.pool_size,
-        max_overflow=settings.db_test.max_overflow,
+        poolclass=NullPool,
     ),
 }
 
