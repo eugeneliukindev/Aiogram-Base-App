@@ -20,7 +20,7 @@ class BotConfig(BaseModel):
     token: str
 
 
-class DatabaseConfig(BaseModel):
+class BaseDatabaseConfig(BaseModel):
     # .env
     driver: str = "postgresql+asyncpg"
     host: str = "localhost"
@@ -43,8 +43,6 @@ class DatabaseConfig(BaseModel):
     # .env-template
     echo: bool = False
     echo_pool: bool = False
-    pool_size: int = 50
-    max_overflow: int = 10
 
     naming_convention: dict[str, str] = {
         "ix": "ix_%(column_0_label)s",
@@ -53,6 +51,15 @@ class DatabaseConfig(BaseModel):
         "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
         "pk": "pk_%(table_name)s",
     }
+
+
+class DatabaseTestConfig(BaseDatabaseConfig):
+    pass
+
+
+class DatabaseConfig(BaseDatabaseConfig):
+    pool_size: int = 50
+    max_overflow: int = 10
 
 
 class RedisConfig(BaseModel):
@@ -79,7 +86,7 @@ class Settings(BaseSettings):
     )
 
     db: DatabaseConfig
-    db_test: DatabaseConfig
+    db_test: DatabaseTestConfig
     bot: BotConfig
     redis: RedisConfig
     logging: LoggingConfig
