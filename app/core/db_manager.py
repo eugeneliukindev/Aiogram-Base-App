@@ -45,7 +45,7 @@ db_mapping = {
         url=settings.db_test.url,
         echo=settings.db_test.echo,
         echo_pool=settings.db_test.echo_pool,
-        poolclass=NullPool,
+        poolclass=NullPool,  # WARNING! Don't remove this param
     ),
 }
 
