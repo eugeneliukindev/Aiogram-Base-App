@@ -25,7 +25,7 @@ db_test_manager = DatabaseManager(
 )
 
 
-@pytest_asyncio.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def event_loop(request):
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
@@ -48,7 +48,7 @@ async def session():
         yield session
 
 
-@pytest.fixture()
+@pytest_asyncio.fixture()
 async def redis_storage(redis_server):
     try:
         parse_redis_url(redis_server)
@@ -72,7 +72,7 @@ def bot():
     return MockedBot()
 
 
-@pytest.fixture()
+@pytest_asyncio.fixture()
 async def dispatcher():
     dp = Dispatcher()
     await dp.emit_startup()
