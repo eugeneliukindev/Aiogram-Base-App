@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 
 async def on_shutdown(bot: Bot) -> None:
-    await db_manager.dispose()
+    await db_manager.engine.dispose()
     log.info("Shutdown complete")
 
 

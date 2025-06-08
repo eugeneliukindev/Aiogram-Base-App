@@ -1,36 +1,26 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from sqlalchemy import NullPool  # noqa
+from sqlalchemy import URL, NullPool  # noqa
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from app.config import settings
 from app.utils.enum import ModeEnum
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncGenerator
-    from typing import Any
-
     from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 
 class DatabaseManager:
-    def __init__(self, **engine_kwargs: Any):
-        self.engine: AsyncEngine = create_async_engine(**engine_kwargs)
+    def __init__(self, url: str | URL, **engine_kwargs: Any):
+        self.engine: AsyncEngine = create_async_engine(url=url, **engine_kwargs)
         self.session_factory: async_sessionmaker[AsyncSession] = async_sessionmaker(
             bind=self.engine,
             autocommit=False,
             autoflush=False,
             expire_on_commit=False,
         )
-
-    async def dispose(self) -> None:
-        await self.engine.dispose()
-
-    async def session_getter(self) -> AsyncGenerator[AsyncSession, None]:
-        async with self.session_factory() as session:
-            yield session
 
 
 db_mapping = {
