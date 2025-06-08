@@ -54,3 +54,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "migrations/versions/*.py" = ["W291"] # ignore trailing-whitespace in alembic autogenerate migrations
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
