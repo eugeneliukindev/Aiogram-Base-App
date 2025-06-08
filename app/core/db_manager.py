@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from app.config import settings
+from app.utils.enum import ModeEnum
 
 if TYPE_CHECKING:
     from collections.abc import AsyncGenerator
@@ -44,10 +45,21 @@ class DatabaseManager:
             yield session
 
 
-db_manager = DatabaseManager(
-    url=settings.db.url,
-    echo=settings.db.echo,
-    echo_pool=settings.db.echo_pool,
-    pool_size=settings.db.pool_size,
-    max_overflow=settings.db.max_overflow,
-)
+db_mapping = {
+    ModeEnum.DEV: lambda: DatabaseManager(
+        url=settings.db.url,
+        echo=settings.db.echo,
+        echo_pool=settings.db.echo_pool,
+        pool_size=settings.db.pool_size,
+        max_overflow=settings.db.max_overflow,
+    ),
+    ModeEnum.TEST: lambda: DatabaseManager(
+        url=settings.db_test.url,
+        echo=settings.db_test.echo,
+        echo_pool=settings.db_test.echo_pool,
+        pool_size=settings.db_test.pool_size,
+        max_overflow=settings.db_test.max_overflow,
+    ),
+}
+
+db_manager = db_mapping[settings.mode]()  # lazy db getter

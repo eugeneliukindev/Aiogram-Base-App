@@ -1,6 +1,12 @@
 from enum import StrEnum
 
 
+class ModeEnum(StrEnum):
+    DEV = "DEV"
+    TEST = "TEST"
+    PROD = "PROD"
+
+
 class LogLevelEnum(StrEnum):
     DEBUG = "DEBUG"
     INFO = "INFO"

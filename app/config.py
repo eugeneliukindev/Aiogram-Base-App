@@ -6,7 +6,7 @@ from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
-from app.utils.enum import LogLevelEnum
+from app.utils.enum import LogLevelEnum, ModeEnum
 
 if TYPE_CHECKING:
     from typing import Any, Final
@@ -77,10 +77,16 @@ class Settings(BaseSettings):
         env_nested_delimiter="__",
         env_prefix="APP_CONFIG__",
     )
+    mode: ModeEnum = ModeEnum.DEV
     db: DatabaseConfig
+    db_test: DatabaseConfig
     bot: BotConfig
     redis: RedisConfig
     logging: LoggingConfig
+
+    @field_validator("mode", mode="before")
+    def validate_mode(cls, v: Any) -> ModeEnum | Any:
+        return v.upper() if isinstance(v, str) else v
 
 
 settings = Settings()
