@@ -7,15 +7,22 @@ from aiogram import Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 from redis.asyncio.connection import parse_url as parse_redis_url
 from redis.exceptions import ConnectionError
+from sqlalchemy import NullPool
 
 from app.config import settings
-from app.core import db_manager
+from app.core.db_manager import DatabaseManager
 from app.core.models import BaseOrm
-from app.utils.enum import ModeEnum
 from tests.mock_bot import MockedBot
 
 SKIP_MESSAGE_PATTERN = 'Need "--{db}" option with {db} URI to run'
 INVALID_URI_PATTERN = "Invalid {db} URI {uri!r}: {err}"
+
+db_test_manager = DatabaseManager(
+    url=settings.db_test.url,
+    echo=settings.db_test.echo,
+    echo_pool=settings.db_test.echo_pool,
+    poolclass=NullPool,  # Warning! Don't delete this param!
+)
 
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
@@ -27,17 +34,17 @@ def event_loop(request):
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def prepare_db():
-    assert settings.mode == ModeEnum.TEST
-    async with db_manager.engine.begin() as conn:
+    assert db_test_manager.engine.url == settings.db_test.url
+    async with db_test_manager.engine.begin() as conn:
         await conn.run_sync(BaseOrm.metadata.drop_all)
         await conn.run_sync(BaseOrm.metadata.create_all)
     yield
-    await db_manager.engine.dispose()
+    await db_test_manager.engine.dispose()
 
 
 @pytest_asyncio.fixture(scope="function")
 async def session():
-    async with db_manager.session_factory() as session:
+    async with db_test_manager.session_factory() as session:
         yield session
 
 
