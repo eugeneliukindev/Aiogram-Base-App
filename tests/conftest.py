@@ -1,4 +1,9 @@
+from __future__ import annotations
+
 import asyncio
+from asyncio import AbstractEventLoop
+from collections.abc import Generator
+from typing import TYPE_CHECKING, Any
 
 import pytest
 import pytest_asyncio
@@ -14,6 +19,12 @@ from app.core.db_manager import DatabaseManager
 from app.core.models import BaseOrm
 from tests.mock_bot import MockedBot
 
+if TYPE_CHECKING:
+    from collections.abc import AsyncGenerator
+
+    from _pytest.fixtures import SubRequest
+    from sqlalchemy.ext.asyncio import AsyncSession
+
 SKIP_MESSAGE_PATTERN = 'Need "--{db}" option with {db} URI to run'
 INVALID_URI_PATTERN = "Invalid {db} URI {uri!r}: {err}"
 
@@ -26,14 +37,14 @@ db_test_manager = DatabaseManager(
 
 
 @pytest.fixture(scope="session", autouse=True)
-def event_loop(request):
+def event_loop(request: SubRequest) -> Generator[AbstractEventLoop, None]:
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
 
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
-async def prepare_db():
+async def prepare_db() -> AsyncGenerator[None, None]:
     assert db_test_manager.engine.url == settings.db_test.url
     async with db_test_manager.engine.begin() as conn:
         await conn.run_sync(BaseOrm.metadata.drop_all)
@@ -43,13 +54,13 @@ async def prepare_db():
 
 
 @pytest_asyncio.fixture(scope="function")
-async def session():
+async def session() -> AsyncGenerator[AsyncSession, None]:
     async with db_test_manager.session_factory() as session:
         yield session
 
 
 @pytest_asyncio.fixture()
-async def redis_storage(redis_server):
+async def redis_storage(redis_server: Any) -> AsyncGenerator[RedisStorage, None]:
     try:
         parse_redis_url(redis_server)
     except ValueError as e:
@@ -68,12 +79,12 @@ async def redis_storage(redis_server):
 
 
 @pytest.fixture()
-def bot():
+def bot() -> MockedBot:
     return MockedBot()
 
 
 @pytest_asyncio.fixture()
-async def dispatcher():
+async def dispatcher() -> AsyncGenerator[Dispatcher, None]:
     dp = Dispatcher()
     await dp.emit_startup()
     try:
