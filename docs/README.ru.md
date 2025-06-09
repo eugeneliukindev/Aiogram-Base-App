@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="792" height="369" src="docs/images/logo.png" alt="logo">
+  <img width="792" height="369" src="images/logo.png" alt="logo">
 </p>
 
 [![Python](https://img.shields.io/badge/Python-3.12+-2d91f5?logo=python&logoColor=FFD43B&style=for-the-badge)](https://www.python.org/)
@@ -15,7 +15,7 @@
 [![Pre-commit](https://img.shields.io/badge/Pre--commit-4.2.0-yellow?logo=precommit&style=for-the-badge)](https://pre-commit.com/)
 [![Docker](https://img.shields.io/badge/Docker-24.0-2d91f5?logo=docker&style=for-the-badge)](https://www.docker.com/)
 [![Pytest](https://img.shields.io/badge/Pytest-8.4.0-2d91f5?logo=pytest&style=for-the-badge)](https://docs.pytest.org/)
-[![LICENSE](https://img.shields.io/badge/license-mit-green?style=for-the-badge)](LICENSE.txt)
+[![LICENSE](https://img.shields.io/badge/license-mit-green?style=for-the-badge)](../LICENSE.txt)
 
 # Aiogram Base App 🚀
 
@@ -98,7 +98,7 @@
 
 ### 3. Настройка переменных окружения 🔑
 
-Замените переменные окружения из [.env-template](.env-template) в `.env`
+Замените переменные окружения из [.env-template](../.env-template) в `.env`
 
 ### 4. Запуск Docker контейнеров 🐳
 ```bash
@@ -149,7 +149,7 @@ python main.py
 - **Удаление ненужных файлов 🗑️**
 
   Скорее всего, в вашем проекте эти файлы и директории будут лишние и их можно безопасно удалить:
-  - [**README.md**](README.md)
+  - [**README.md**](../README.md)
   - [**docs**]()
 
 ---
@@ -168,7 +168,7 @@ python main.py
 
 ## Лицензия 📄
 
-Проект распространяется под лицензией MIT. Подробности в файле [LICENSE](LICENSE.txt).
+Проект распространяется под лицензией MIT. Подробности в файле [LICENSE](../LICENSE.txt).
 
 ---
 
