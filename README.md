@@ -76,27 +76,8 @@ This starter kit is your fast track to building powerful Telegram bots with [**A
 
 ### 3. Configure Environment Variables 🔑
 
-Update the `.env` file with your desired values:
-  ```
-  APP_CONFIG__BOT__TOKEN=your_bot_token
-  
-  APP_CONFIG__DB__NAME=your_db_name
-  APP_CONFIG__DB__PASSWORD=your_db_password
-  APP_CONFIG__DB__USER=your_db_user
-  APP_CONFIG__DB__HOST=localhost
-  APP_CONFIG__DB__PORT=5432
-  APP_CONFIG__DB__DRIVER=postgresql+asyncpg
-  
-  APP_CONFIG__DB_TEST__NAME=your_test_db_name
-  APP_CONFIG__DB_TEST__PASSWORD=your_test_db_password
-  APP_CONFIG__DB_TEST__USER=your_test_db_user
-  APP_CONFIG__DB_TEST__HOST=localhost
-  APP_CONFIG__DB_TEST__PORT=5432
-  APP_CONFIG__DB_TEST__DRIVER=postgresql+asyncpg
-  
-  APP_CONFIG__REDIS__HOST=localhost
-  APP_CONFIG__REDIS__PORT=6379
-  ```
+Replace environment variables from [.env-template](.env-template) with `.env`
+
 ---
 
 ### 4. Alembic Migrations 🔄

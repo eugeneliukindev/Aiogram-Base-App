@@ -80,28 +80,7 @@
 
 ### 3. Настройка переменных окружения 🔑
 
-Добавьте переменные окружения в `.env` на нужные вам:
-  ```
-  APP_CONFIG__BOT__TOKEN=your_bot_token
-  
-  APP_CONFIG__DB__NAME=your_db_name
-  APP_CONFIG__DB__PASSWORD=your_db_password
-  APP_CONFIG__DB__USER=your_db_user
-  APP_CONFIG__DB__HOST=localhost
-  APP_CONFIG__DB__PORT=5432
-  APP_CONFIG__DB__DRIVER=postgresql+asyncpg
-  
-  APP_CONFIG__DB_TEST__NAME=your_test_db_name
-  APP_CONFIG__DB_TEST__PASSWORD=your_test_db_password
-  APP_CONFIG__DB_TEST__USER=your_test_db_user
-  APP_CONFIG__DB_TEST__HOST=localhost
-  APP_CONFIG__DB_TEST__PORT=5432
-  APP_CONFIG__DB_TEST__DRIVER=postgresql+asyncpg
-  
-  APP_CONFIG__REDIS__HOST=localhost
-  APP_CONFIG__REDIS__PORT=6379
-  ```
----
+Замените переменные окружения из [.env-template](.env-template) в `.env`
 
 ### 4. Миграции Alembic 🔄
 
