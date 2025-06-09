@@ -1,6 +1,7 @@
 services:
   pg:
     image: postgres:16
+    profiles: [ "default" ]
     container_name: pg_container
     environment:
       POSTGRES_DB: ${APP_CONFIG__DB__NAME}
@@ -17,8 +18,8 @@ services:
       retries: 3
 
   pg_test:
-    profiles: ["test"] # docker-compose --profile test up -d
     image: postgres:16
+    profiles: [ "test" ]
     container_name: pg_test_container
     environment:
       POSTGRES_DB: ${APP_CONFIG__DB_TEST__NAME}
@@ -34,6 +35,7 @@ services:
 
   redis:
     image: redis:latest
+    profiles: [ "default" ]
     container_name: redis_container
     ports:
       - ${APP_CONFIG__REDIS__PORT}:6379
