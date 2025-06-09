@@ -1,6 +1,7 @@
 [![Python](https://img.shields.io/badge/Python-3.12+-2d91f5?logo=python&logoColor=FFD43B&style=for-the-badge)](https://www.python.org/)
 [![Aiogram](https://img.shields.io/badge/Aiogram-3.x-2d91f5?logo=telegram&style=for-the-badge)](https://aiogram.dev/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-D71F00?logo=sqlalchemy&style=for-the-badge)](https://www.sqlalchemy.org/)
+[![PostgreSQL](https://img.shields.io/badge/Postgresql-16.0-2d91f5?logo=postgresql&logoColor=white&style=for-the-badge)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-latest-DC382D?logo=redis&style=for-the-badge)](https://redis.io/)
 [![Pydantic](https://img.shields.io/badge/Pydantic-2.11.5-E92063?logo=pydantic&style=for-the-badge)](https://docs.pydantic.dev/latest/)
 [![Alembic](https://img.shields.io/badge/Alembic-1.16.1-2d91f5?style=for-the-badge)](https://redis.io/)
