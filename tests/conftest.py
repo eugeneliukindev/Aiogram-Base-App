@@ -17,6 +17,7 @@ from sqlalchemy import NullPool
 from app.config import settings
 from app.core.db_manager import DatabaseManager
 from app.core.models import BaseOrm
+from app.utils.texts import load_json_text
 from tests.mock_bot import MockedBot
 
 if TYPE_CHECKING:
@@ -91,3 +92,8 @@ async def dispatcher() -> AsyncGenerator[Dispatcher, None]:
         yield dp
     finally:
         await dp.emit_shutdown()
+
+
+@pytest_asyncio.fixture()
+async def json_text() -> Any:
+    return await load_json_text()
