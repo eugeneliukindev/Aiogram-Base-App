@@ -66,9 +66,9 @@
     poetry install
     ```
   
-  - Установка без dev зависимостей:
+  - Установка только main зависимостей:
     ```bash
-    poetry install --without dev
+    poetry install --only main
     ```
 
 - Через `pip`:

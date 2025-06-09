@@ -62,9 +62,9 @@ This starter kit is your fast track to building powerful Telegram bots with [**A
     poetry install
     ```
   
-  - Install without dev dependencies:
+  - Install only main dependencies:
     ```bash
-    poetry install --without dev
+    poetry install --only main
     ```
 
 - Using `pip`:
