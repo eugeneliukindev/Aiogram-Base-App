@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="792" height="369" src="docs/images/logo.png" alt="logo">
+</p>
+
 [![Python](https://img.shields.io/badge/Python-3.12+-2d91f5?logo=python&logoColor=FFD43B&style=for-the-badge)](https://www.python.org/)
 [![Aiogram](https://img.shields.io/badge/Aiogram-3.x-2d91f5?logo=telegram&style=for-the-badge)](https://aiogram.dev/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-D71F00?logo=sqlalchemy&style=for-the-badge)](https://www.sqlalchemy.org/)
