@@ -152,6 +152,13 @@ python main.py
   ```bash
   pre-commit install
   ```
+- **Removing unnecessary files 🗑️**
+
+  Most likely, these files and directories will be unnecessary in your project and can be safely deleted:
+  - [**README.md**](README.md)
+  - [**docs**](docs)
+
+---
 
 ---
 
