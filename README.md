@@ -1,3 +1,17 @@
+[![Python](https://img.shields.io/badge/Python-3.12+-2d91f5?logo=python&logoColor=FFD43B&style=for-the-badge)](https://www.python.org/)
+[![Aiogram](https://img.shields.io/badge/Aiogram-3.x-2d91f5?logo=telegram&style=for-the-badge)](https://aiogram.dev/)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-D71F00?logo=sqlalchemy&style=for-the-badge)](https://www.sqlalchemy.org/)
+[![Redis](https://img.shields.io/badge/Redis-latest-DC382D?logo=redis&style=for-the-badge)](https://redis.io/)
+[![Pydantic](https://img.shields.io/badge/Pydantic-2.11.5-E92063?logo=pydantic&style=for-the-badge)](https://docs.pydantic.dev/latest/)
+[![Alembic](https://img.shields.io/badge/Alembic-1.16.1-2d91f5?style=for-the-badge)](https://redis.io/)
+[![Poetry](https://img.shields.io/badge/Poetry-2.1.3-2d91f5?logo=poetry&style=for-the-badge)](https://python-poetry.org/)
+[![Mypy](https://img.shields.io/badge/Mypy-1.6-2d91f5?logo=python&logoColor=59acff&style=for-the-badge)](https://mypy-lang.org/)
+[![Ruff](https://img.shields.io/badge/Ruff-0.11.12-green?logo=ruff&style=for-the-badge)](https://docs.astral.sh/ruff/)
+[![Pre-commit](https://img.shields.io/badge/Pre--commit-4.2.0-yellow?logo=precommit&style=for-the-badge)](https://pre-commit.com/)
+[![Docker](https://img.shields.io/badge/Docker-24.0-2d91f5?logo=docker&style=for-the-badge)](https://www.docker.com/)
+[![Pytest](https://img.shields.io/badge/Pytest-8.4.0-2d91f5?logo=pytest&style=for-the-badge)](https://docs.pytest.org/)
+[![LICENSE](https://img.shields.io/badge/license-mit-green?style=for-the-badge)](LICENSE.txt)
+
 # Aiogram Base App 🚀
 
 A lightweight and ready-to-use template for developing a Telegram bot using [**Aiogram**](https://github.com/aiogram/aiogram). Get started in minutes!
@@ -80,16 +94,22 @@ Replace environment variables from [.env-template](.env-template) with `.env`
 
 ---
 
-### 4. Alembic Migrations 🔄
 
+### 4. Launching Docker containers 🐳
+```bash
+docker compose --profile default up -d 
+```
+
+### 5. Alembic Migrations 🔄
 Apply existing database migrations using Alembic:
+
 ```bash
 alembic upgrade head
 ```
 
 ---
 
-### 5. Run the Bot 🚀
+### 6. Run the Bot 🚀
 
 Start Docker containers:
 ```bash
