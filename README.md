@@ -25,6 +25,7 @@ This starter kit is your fast track to building powerful Telegram bots with [**A
 - ⚙️ **Environment variable management** with [**Pydantic-settings**](https://github.com/pydantic/pydantic-settings)
 - 📁 **Asynchronous file operations** via [**Aiofiles**](https://github.com/Tinche/aiofiles) for efficient handling
 - 🛡️ **Code quality control** with [**Pre-commit**](https://github.com/pre-commit/pre-commit) hooks and Ruff for clean commits
+- ✅ **Tests** with [**pytest**](https://github.com/pytest-dev/pytest) to test your code
 - 🐳 **Docker image** for:
     - [**PostgreSQL**](https://hub.docker.com/_/postgres)
     - [**Redis**](https://hub.docker.com/_/redis)
@@ -78,13 +79,20 @@ This starter kit is your fast track to building powerful Telegram bots with [**A
 Update the `.env` file with your desired values:
   ```
   APP_CONFIG__BOT__TOKEN=your_bot_token
-
+  
   APP_CONFIG__DB__NAME=your_db_name
   APP_CONFIG__DB__PASSWORD=your_db_password
   APP_CONFIG__DB__USER=your_db_user
   APP_CONFIG__DB__HOST=localhost
   APP_CONFIG__DB__PORT=5432
   APP_CONFIG__DB__DRIVER=postgresql+asyncpg
+  
+  APP_CONFIG__DB_TEST__NAME=your_test_db_name
+  APP_CONFIG__DB_TEST__PASSWORD=your_test_db_password
+  APP_CONFIG__DB_TEST__USER=your_test_db_user
+  APP_CONFIG__DB_TEST__HOST=localhost
+  APP_CONFIG__DB_TEST__PORT=5432
+  APP_CONFIG__DB_TEST__DRIVER=postgresql+asyncpg
   
   APP_CONFIG__REDIS__HOST=localhost
   APP_CONFIG__REDIS__PORT=6379
@@ -104,7 +112,7 @@ alembic upgrade head
 
 Start Docker containers:
 ```bash
-docker compose up -d
+docker compose --profile default up -d 
 ```
 
 Run your bot:
@@ -119,6 +127,7 @@ python main.py
 - Run `mypy .` for type checking
 - Run `ruff check .` for linting
 - Run `ruff format .` for code formatting
+- Run `docker compose --profile test up -d` & `pytest` to run tests
 
 ---
 

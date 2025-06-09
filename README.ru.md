@@ -29,6 +29,7 @@
 - 📁 **Асинхронная работа с файлами** через [**Aiofiles**](https://github.com/Tinche/aiofiles) для эффективной обработки
 - 🛡️ **Контроль качества кода** с [**Pre-commit**](https://github.com/pre-commit/pre-commit) хуками и Ruff для чистоты
   ваших коммитов
+- ✅ **Тесты** с [**pytest**](https://github.com/pytest-dev/pytest) для тестирования вашего кода
 - 🐳 **Docker-образ** для:
     - [**PostgreSQL**](https://hub.docker.com/_/postgres)
     - [**Redis**](https://hub.docker.com/_/redis)
@@ -79,16 +80,23 @@
 
 ### 3. Настройка переменных окружения 🔑
 
-Измените переменные окружения в `.env` на нужные вам:
+Добавьте переменные окружения в `.env` на нужные вам:
   ```
   APP_CONFIG__BOT__TOKEN=your_bot_token
-
+  
   APP_CONFIG__DB__NAME=your_db_name
   APP_CONFIG__DB__PASSWORD=your_db_password
   APP_CONFIG__DB__USER=your_db_user
   APP_CONFIG__DB__HOST=localhost
   APP_CONFIG__DB__PORT=5432
   APP_CONFIG__DB__DRIVER=postgresql+asyncpg
+  
+  APP_CONFIG__DB_TEST__NAME=your_test_db_name
+  APP_CONFIG__DB_TEST__PASSWORD=your_test_db_password
+  APP_CONFIG__DB_TEST__USER=your_test_db_user
+  APP_CONFIG__DB_TEST__HOST=localhost
+  APP_CONFIG__DB_TEST__PORT=5432
+  APP_CONFIG__DB_TEST__DRIVER=postgresql+asyncpg
   
   APP_CONFIG__REDIS__HOST=localhost
   APP_CONFIG__REDIS__PORT=6379
@@ -108,7 +116,7 @@ alembic upgrade head
 
 Запустите Docker-образы:
 ```bash
-docker compose up -d
+docker compose --profile default up -d 
 ```
 
 Запустите вашего бота:
@@ -123,6 +131,7 @@ python main.py
 - Выполните `mypy .` для проверки типов
 - Выполните `ruff check .` для linting
 - Выполните `ruff format .` для форматирования кода
+- Выполните `docker compose --profile test up -d` & `pytest` для запуска тестов 
 
 ---
 
