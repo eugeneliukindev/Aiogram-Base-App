@@ -30,9 +30,15 @@ enable_error_code = ["ignore-without-code", "truthy-bool", "redundant-expr"]
 strict_bytes = true
 local_partial_types = true
 plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]
+exclude = [
+  "tests/mock_bot.*",  # Copy from aiogram tests
+]
 
-[tool.ruff]
-line-length = 120
+[[tool.mypy.overrides]]
+module = [
+  "tests/mock_bot.*",
+]
+follow_imports = "skip"
 
 [tool.ruff.lint]
 select = [
