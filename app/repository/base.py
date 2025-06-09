@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import delete, insert, select, update
 
@@ -10,7 +10,6 @@ from app.repository import AbstractRepository
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
-    from typing import Any
 
     from pydantic import BaseModel
     from sqlalchemy import Result, ScalarResult
@@ -47,7 +46,9 @@ class BaseRepository[ModelT: BaseOrm, CreateST: BaseModel, UpdateST: BaseModel](
         await session.commit()
 
     @classmethod
-    async def _get_by_fields(cls, session: AsyncSession, **filter_by: Any) -> ScalarResult[ModelT]:
+    async def _get_by_fields(
+        cls, session: AsyncSession, **filter_by: Any
+    ) -> ScalarResult[ModelT]:
         # fmt: off
         stmt = (
             select(cls.model_class).
@@ -60,7 +61,9 @@ class BaseRepository[ModelT: BaseOrm, CreateST: BaseModel, UpdateST: BaseModel](
 
     @classmethod
     async def get_by_id(cls, session: AsyncSession, id_: int) -> ModelT | None:
-        scalar_result: ScalarResult[ModelT] = await cls._get_by_fields(session=session, id=id_)
+        scalar_result: ScalarResult[ModelT] = await cls._get_by_fields(
+            session=session, id=id_
+        )
         model_instance: ModelT | None = scalar_result.one_or_none()
         return model_instance
 
@@ -72,7 +75,9 @@ class BaseRepository[ModelT: BaseOrm, CreateST: BaseModel, UpdateST: BaseModel](
         return model_instances
 
     @classmethod
-    async def _update_by_filter_by(cls, session: AsyncSession, update_schema: UpdateST, **filter_by: Any) -> None:
+    async def _update_by_filter_by(
+        cls, session: AsyncSession, update_schema: UpdateST, **filter_by: Any
+    ) -> None:
         # fmt: off
         stmt = (
             update(cls.model_class)
@@ -83,11 +88,17 @@ class BaseRepository[ModelT: BaseOrm, CreateST: BaseModel, UpdateST: BaseModel](
         await session.execute(stmt)
 
     @classmethod
-    async def update_by_id(cls, session: AsyncSession, id_: int, update_schema: UpdateST) -> None:
-        await cls._update_by_filter_by(session=session, update_schema=update_schema, id=id_)
+    async def update_by_id(
+        cls, session: AsyncSession, id_: int, update_schema: UpdateST
+    ) -> None:
+        await cls._update_by_filter_by(
+            session=session, update_schema=update_schema, id=id_
+        )
 
     @classmethod
-    async def _delete_by_filter_by(cls, session: AsyncSession, **filter_by: Any) -> None:
+    async def _delete_by_filter_by(
+        cls, session: AsyncSession, **filter_by: Any
+    ) -> None:
         # fmt: off
         stmt = (
             delete(cls.model_class)

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Callable
 
 from aiogram import BaseMiddleware
 
@@ -8,14 +8,16 @@ from app.core.db_manager import db_manager
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable
-    from typing import Any, Callable
 
     from aiogram.types import TelegramObject
     from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 
 class SessionDepMiddleware(BaseMiddleware):
-    def __init__(self, session_factory: async_sessionmaker[AsyncSession] = db_manager.session_factory) -> None:
+    def __init__(
+        self,
+        session_factory: async_sessionmaker[AsyncSession] = db_manager.session_factory,
+    ) -> None:
         self.session_factory = session_factory
 
     async def __call__(

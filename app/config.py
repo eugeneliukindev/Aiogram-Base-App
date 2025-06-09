@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import Any, Final
 
 from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -8,11 +8,9 @@ from sqlalchemy import URL
 
 from app.utils.enum import LogLevelEnum
 
-if TYPE_CHECKING:
-    from typing import Any, Final
-
-
-LOG_DEFAULT_FORMAT: Final[str] = "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
+LOG_DEFAULT_FORMAT: Final[str] = (
+    "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
+)
 LOG_DATE_FORMAT: Final[str] = "%Y-%m-%d %H:%M:%S"
 
 
