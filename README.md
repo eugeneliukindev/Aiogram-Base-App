@@ -115,13 +115,6 @@ alembic upgrade head
 ---
 
 ### 6. Run the Bot 🚀
-
-Start Docker containers:
-```bash
-docker compose --profile default up -d 
-```
-
-Run your bot:
 ```bash
 python main.py
 ```
