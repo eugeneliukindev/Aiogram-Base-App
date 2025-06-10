@@ -28,10 +28,4 @@ class SessionDepMiddleware(BaseMiddleware):
     ) -> Any:
         async with self.session_factory() as session:
             data["session"] = session
-            try:
-                return await handler(event, data)
-            except Exception:
-                await session.rollback()
-                raise
-            finally:
-                await session.close()
+            return await handler(event, data)
