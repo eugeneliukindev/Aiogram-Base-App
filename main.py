@@ -10,7 +10,7 @@ from aiogram.fsm.storage.redis import RedisStorage
 from app.config import settings
 from app.core import db_manager
 from app.handlers.commands import router as commands_router
-from app.middlewares import SessionDepMiddleware
+from app.middlewares import SessionDepMiddleware, TextsDepMiddleware
 from app.utils.logger import configure_logging
 
 log = logging.getLogger(__name__)
@@ -37,6 +37,8 @@ async def main(
     dp.shutdown.register(on_shutdown)
 
     dp.include_routers(commands_router)
+
+    commands_router.message.middleware(TextsDepMiddleware())
 
     dp.update.outer_middleware.register(SessionDepMiddleware())
 
