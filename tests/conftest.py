@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from asyncio import AbstractEventLoop
-from collections.abc import Generator
 from typing import TYPE_CHECKING, Any
 
 import pytest
@@ -12,16 +10,18 @@ from aiogram import Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 from redis.asyncio.connection import parse_url as parse_redis_url
 from redis.exceptions import ConnectionError
-from sqlalchemy import NullPool
+from sqlalchemy import NullPool, insert
 
 from app.config import settings
 from app.core.db_manager import DatabaseManager
-from app.core.models import BaseOrm
+from app.core.models import BaseOrm, UserOrm
 from app.utils.texts import load_json_text
+from tests.integration_tests.utils import MOCK_USERS
 from tests.mock_bot import MockedBot
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncGenerator
+    from asyncio import AbstractEventLoop
+    from collections.abc import AsyncGenerator, Generator
 
     from _pytest.fixtures import SubRequest
     from sqlalchemy.ext.asyncio import AsyncSession
@@ -47,10 +47,20 @@ def event_loop(request: SubRequest) -> Generator[AbstractEventLoop, None]:
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def prepare_db() -> AsyncGenerator[None, None]:
     assert db_test_manager.engine.url == settings.db_test.url
+    assert settings.db_test.url != settings.db.url
+
     async with db_test_manager.engine.begin() as conn:
         await conn.run_sync(BaseOrm.metadata.drop_all)
         await conn.run_sync(BaseOrm.metadata.create_all)
+
+    async with db_test_manager.session_factory() as session:
+        for mock_user in MOCK_USERS:
+            stmt = insert(UserOrm).values(**mock_user)
+            await session.execute(stmt)
+        await session.commit()
+
     yield
+
     await db_test_manager.engine.dispose()
 
 

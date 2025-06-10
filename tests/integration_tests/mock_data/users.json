@@ -1,0 +1,68 @@
+[
+  {
+    "tg_id": 444555666,
+    "first_name": "David",
+    "username": "david_k",
+    "last_name": "King"
+  },
+  {
+    "tg_id": 777888999,
+    "first_name": "Sophia",
+    "username": "sophia_l",
+    "last_name": "Lee"
+  },
+  {
+    "tg_id": 222333444,
+    "first_name": "Michael",
+    "username": null,
+    "last_name": null
+  },
+  {
+    "tg_id": 888999000,
+    "first_name": "Emma",
+    "username": "emma_j",
+    "last_name": null
+  },
+  {
+    "tg_id": 666777888,
+    "first_name": "Daniel",
+    "username": null,
+    "last_name": "Taylor"
+  },
+  {
+    "tg_id": 333444555,
+    "first_name": "Olivia",
+    "username": null,
+    "last_name": null
+  },
+  {
+    "tg_id": 999000111,
+    "first_name": "James",
+    "username": "james_w",
+    "last_name": "White"
+  },
+  {
+    "tg_id": 123123123,
+    "first_name": "Ava",
+    "username": "ava_g",
+    "last_name": "Green"
+  },
+  {
+    "tg_id": 456456456,
+    "first_name": "William",
+    "username": "william_h",
+    "last_name": "Harris"
+  },
+  {
+    "tg_id": 789789789,
+    "first_name": "Mia",
+    "username": "mia_c",
+    "last_name": "Clark"
+  },
+  {
+    "tg_id": 321321321,
+    "first_name": "Benjamin",
+    "username": "benjamin_l",
+    "last_name": "Lewis"
+  }
+]
