@@ -75,7 +75,7 @@ class BaseRepository[ModelT: BaseOrm, CreateST: BaseModel, UpdateST: BaseModel](
         # fmt: off
         stmt = (
             update(cls.model_class)
-            .values(**update_schema.model_dump(exclude_unset=True))
+            .values(**update_schema.model_dump())
             .filter_by(**filter_by)
         )
         # fmt: on
