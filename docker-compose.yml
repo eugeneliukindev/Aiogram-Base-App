@@ -1,4 +1,30 @@
 services:
+  app:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    environment:
+      APP_CONFIG__DB__NAME: ${APP_CONFIG__DB__NAME}
+      APP_CONFIG__DB__PASSWORD: ${APP_CONFIG__DB__PASSWORD}
+      APP_CONFIG__DB__USER: ${APP_CONFIG__DB__USER}
+      APP_CONFIG__DB__HOST: pg
+      APP_CONFIG__DB__PORT: ${APP_CONFIG__DB__PORT}
+      APP_CONFIG__DB__DRIVER: ${APP_CONFIG__DB__DRIVER}
+
+      APP_CONFIG__DB__ECHO: ${APP_CONFIG__DB__ECHO}
+      APP_CONFIG__DB__ECHO_POOL: ${APP_CONFIG__DB__ECHO_POOL}
+      APP_CONFIG__DB__POOL_SIZE: ${APP_CONFIG__DB__POOL_SIZE}
+      APP_CONFIG__DB__MAX_OVERFLOW: ${APP_CONFIG__DB__MAX_OVERFLOW}
+
+      APP_CONFIG__REDIS__HOST: redis
+      APP_CONFIG__REDIS__PORT: ${APP_CONFIG__REDIS__PORT}
+    profiles: [ "default" ]
+    depends_on:
+      pg:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
   pg:
     image: postgres:16
     profiles: [ "default" ]
