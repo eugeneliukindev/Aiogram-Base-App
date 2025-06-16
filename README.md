@@ -17,11 +17,21 @@
 [![Pytest](https://img.shields.io/badge/Pytest-8.4.0-2d91f5?logo=pytest&style=for-the-badge)](https://docs.pytest.org/)
 [![LICENSE](https://img.shields.io/badge/license-mit-green?style=for-the-badge)](LICENSE.txt)
 
+---
+
+<details>
+<summary><b>🌍 Select Language</b></summary>
+
+- [English](README.md)
+- [Русский](docs/README.ru.md)
+</details>
+
+---
+
 # Aiogram Base App 🚀
 
 A lightweight and ready-to-use template for developing a Telegram bot using [**Aiogram**](https://github.com/aiogram/aiogram). Get started in minutes!
 
----
 
 ## 🌟 Why Choose This Template?
 
