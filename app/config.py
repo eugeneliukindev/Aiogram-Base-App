@@ -1,5 +1,4 @@
-from __future__ import annotations
-
+from pathlib import Path
 from typing import Any, Final
 
 from pydantic import BaseModel, field_validator
@@ -7,6 +6,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
 from app.utils.enum import LogLevelEnum
+
+BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
 LOG_DEFAULT_FORMAT: Final[str] = "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
 LOG_DATE_FORMAT: Final[str] = "%Y-%m-%d %H:%M:%S"
@@ -17,7 +18,6 @@ class BotConfig(BaseModel):
 
 
 class BaseDatabaseConfig(BaseModel):
-    # .env
     driver: str = "postgresql+asyncpg"
     host: str = "localhost"
     port: int = 5432
@@ -36,7 +36,6 @@ class BaseDatabaseConfig(BaseModel):
             drivername=self.driver,
         )
 
-    # .env-template
     echo: bool = False
     echo_pool: bool = False
 
@@ -75,7 +74,10 @@ class LoggingConfig(BaseModel):
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=(".env-template", ".env"),
+        env_file=(
+            BASE_DIR / ".env-template",
+            BASE_DIR / ".env",
+        ),
         case_sensitive=False,
         env_nested_delimiter="__",
         env_prefix="APP_CONFIG__",
