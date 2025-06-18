@@ -49,7 +49,7 @@ class TestCommandStartHandler:
         mock_message.from_user = user
         mock_message.reply = AsyncMock()
 
-        await command_start_handler(message=mock_message, session=session)
+        await command_start_handler(message=mock_message, session=session, texts=json_text)
 
         stmt = select(UserOrm).filter_by(tg_id=mock_message.from_user.id)
         result = await session.execute(stmt)
