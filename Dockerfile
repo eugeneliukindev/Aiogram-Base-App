@@ -27,7 +27,7 @@ COPY scripts/ scripts/
 COPY texts/ texts/
 COPY main.py alembic.ini ./
 
-RUN chmod +x scripts/prestart-migrations.sh scripts/startup
+RUN chmod +x scripts/prestart-migrations.sh
 
 ENTRYPOINT ["scripts/prestart-migrations.sh"]
 CMD ["python", "main.py"]
