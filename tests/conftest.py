@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from pathlib import Path
-from typing import TYPE_CHECKING, Any, Final
+from typing import TYPE_CHECKING, Any
 
 import pytest
 import pytest_asyncio
@@ -13,7 +12,8 @@ from redis.asyncio.connection import parse_url as parse_redis_url
 from redis.exceptions import ConnectionError
 from sqlalchemy import insert
 
-from src.config import db_manager, settings
+from src.config import settings
+from src.core import db_manager
 from src.core.models import BaseOrm, UserOrm
 from src.utils.texts import load_json_text
 from tests.config import test_db_manager, test_settings
@@ -29,8 +29,6 @@ if TYPE_CHECKING:
 
 SKIP_MESSAGE_PATTERN = 'Need "--{db}" option with {db} URI to run'
 INVALID_URI_PATTERN = "Invalid {db} URI {uri!r}: {err}"
-
-BASE_DIR: Final[Path] = Path(__file__).resolve().parent.parent
 
 
 @pytest.fixture(scope="session", autouse=True)

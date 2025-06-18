@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+from pathlib import Path
+from typing import Final
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import NullPool
 
 from src.config import BaseDatabaseConfig, RedisConfig
 from src.core.db_manager import DatabaseManager
-from tests.conftest import BASE_DIR
+
+BASE_DIR: Final[Path] = Path(__file__).resolve().parent.parent
 
 
 class TestSettings(BaseSettings):
