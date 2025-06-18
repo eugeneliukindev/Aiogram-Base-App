@@ -3,6 +3,7 @@ services:
     build:
       dockerfile: ./Dockerfile
       context: ./
+    profiles: [ "prod" ]
     environment:
       APP_CONFIG__BOT__TOKEN: ${APP_CONFIG__BOT__TOKEN}
 
@@ -20,16 +21,17 @@ services:
 
       APP_CONFIG__REDIS__HOST: redis
       APP_CONFIG__REDIS__PORT: ${APP_CONFIG__REDIS__PORT}
-    profiles: [ "default" ]
     depends_on:
       pg:
         condition: service_healthy
       redis:
         condition: service_healthy
+    networks:
+      - prod_network
 
   pg:
     image: postgres:16
-    profiles: [ "default" ]
+    profiles: [ "prod" ]
     container_name: pg_container
     environment:
       POSTGRES_DB: ${APP_CONFIG__DB__NAME}
@@ -44,6 +46,24 @@ services:
       interval: 3s
       timeout: 3s
       retries: 3
+    networks:
+      - prod_network
+
+  redis:
+    image: redis:latest
+    profiles: [ "prod" ]
+    container_name: redis_container
+    ports:
+      - ${APP_CONFIG__REDIS__PORT}:6379
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    volumes:
+      - redis_data:/bitnami/redis/data
+    networks:
+      - prod_network
 
   pg_test:
     image: postgres:16
@@ -60,21 +80,32 @@ services:
       interval: 3s
       timeout: 3s
       retries: 3
+    networks:
+      - test_network
 
-  redis:
+  redis_test:
     image: redis:latest
-    profiles: [ "default" ]
-    container_name: redis_container
+    profiles: [ "test" ]
+    container_name: redis_test_container
     ports:
-      - ${APP_CONFIG__REDIS__PORT}:6379
+      - ${APP_TEST_CONFIG__REDIS__PORT}:6379
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
       interval: 1s
       timeout: 3s
       retries: 5
     volumes:
       - redis_data:/bitnami/redis/data
+    networks:
+      - test_network
 
 volumes:
   pg_data:
   redis_data:
+networks:
+  prod_network:
+    driver: bridge
+    name: aiogram-prod-network
+  test_network:
+    driver: bridge
+    name: aiogram-test-network
