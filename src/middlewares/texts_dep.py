@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Callable
 
 from aiogram import BaseMiddleware
 
-from src.core.db_manager import db_manager
+from src.core import db_manager
 from src.utils.texts import load_json_text
 
 if TYPE_CHECKING:
