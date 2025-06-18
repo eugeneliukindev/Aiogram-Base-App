@@ -102,7 +102,7 @@
 
 ### 4. Запуск Docker контейнеров 🐳
 ```bash
-docker compose --profile default up -d 
+docker compose --profile prod up -d 
 ```
 
 ### 5. Миграции Alembic 🔄

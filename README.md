@@ -112,7 +112,7 @@ Replace environment variables from [.env-template](.env-template) with `.env`
 
 ### 4. Launching Docker containers 🐳
 ```bash
-docker compose --profile default up -d 
+docker compose --profile prod up -d 
 ```
 
 ### 5. Alembic Migrations 🔄
