@@ -65,6 +65,11 @@ async def session() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
+@pytest_asyncio.fixture(scope="session", autouse=True)
+async def prepare_redis() -> None:
+    assert test_settings.redis.url != settings.redis.url
+
+
 @pytest_asyncio.fixture()
 async def redis_storage() -> AsyncGenerator[RedisStorage, None]:
     try:
