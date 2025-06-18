@@ -4,6 +4,8 @@ services:
       dockerfile: ./Dockerfile
       context: ./
     environment:
+      APP_CONFIG__BOT__TOKEN: ${APP_CONFIG__BOT__TOKEN}
+
       APP_CONFIG__DB__NAME: ${APP_CONFIG__DB__NAME}
       APP_CONFIG__DB__PASSWORD: ${APP_CONFIG__DB__PASSWORD}
       APP_CONFIG__DB__USER: ${APP_CONFIG__DB__USER}
@@ -48,11 +50,11 @@ services:
     profiles: [ "test" ]
     container_name: pg_test_container
     environment:
-      POSTGRES_DB: ${APP_CONFIG__DB_TEST__NAME}
-      POSTGRES_USER: ${APP_CONFIG__DB_TEST__USER}
-      POSTGRES_PASSWORD: ${APP_CONFIG__DB_TEST__PASSWORD}
+      POSTGRES_DB: ${APP_TEST_CONFIG__DB__NAME}
+      POSTGRES_USER: ${APP_TEST_CONFIG__DB__USER}
+      POSTGRES_PASSWORD: ${APP_TEST_CONFIG__DB__PASSWORD}
     ports:
-      - ${APP_CONFIG__DB_TEST__PORT}:5432
+      - ${APP_TEST_CONFIG__DB__PORT}:5432
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 3s
