@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from pathlib import Path
 from typing import Any, Final
+from urllib.parse import quote
 
 from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -60,6 +63,21 @@ class DatabaseConfig(BaseDatabaseConfig):
 class RedisConfig(BaseModel):
     host: str = "localhost"
     port: int = 6379
+    username: str | None = None
+    password: str | None = None
+    db: int = 0
+    ssl: bool = False
+
+    @property
+    def url(self) -> str:
+        scheme = "rediss" if self.ssl else "redis"
+        auth = ""
+        if self.username or self.password:
+            username_part = quote(self.username) if self.username else ""
+            password_part = quote(self.password) if self.password else ""
+            auth = f"{username_part}:{password_part}@"
+
+        return f"{scheme}://{auth}{self.host}:{self.port}/{self.db}"
 
 
 class LoggingConfig(BaseModel):
