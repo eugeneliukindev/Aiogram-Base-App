@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from pydantic import BaseModel
     from sqlalchemy.ext.asyncio import AsyncSession
 
-    from app.core.models import BaseOrm
+    from src.core.models import BaseOrm
 
 
 class AbstractRepository[ModelT: BaseOrm, CreateST: BaseModel, UpdateST: BaseModel](ABC):

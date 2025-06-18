@@ -5,7 +5,7 @@ from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
-from app.utils.enum import LogLevelEnum
+from src.utils.enum import LogLevelEnum
 
 BASE_DIR: Final[Path] = Path(__file__).resolve().parent.parent
 

@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING, Any, Callable
 
 from aiogram import BaseMiddleware
 
-from app.core.db_manager import db_manager
+from src.core.db_manager import db_manager
+from src.utils.texts import load_json_text
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable
@@ -13,7 +14,7 @@ if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 
-class SessionDepMiddleware(BaseMiddleware):
+class TextsDepMiddleware(BaseMiddleware):
     def __init__(
         self,
         session_factory: async_sessionmaker[AsyncSession] = db_manager.session_factory,
@@ -26,6 +27,10 @@ class SessionDepMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
-        async with self.session_factory() as session:
-            data["session"] = session
-            return await handler(event, data)
+        # You can get the session from `data`, so if you need to send messages in different languages,
+        # you can query the database using this session:
+        # session: AsyncSession = data["session"]
+
+        texts = await load_json_text()
+        data["texts"] = texts
+        return await handler(event, data)

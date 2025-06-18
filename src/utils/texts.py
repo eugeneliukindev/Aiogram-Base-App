@@ -6,7 +6,7 @@ from typing import Any, Final
 
 import aiofiles
 
-from app.utils.enum import LanguageEnum
+from src.utils.enum import LanguageEnum
 
 ROOT_DIR: Final[Path] = Path(__file__).parent.parent.parent
 

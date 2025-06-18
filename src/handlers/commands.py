@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING, Any
 from aiogram import Router
 from aiogram.filters import CommandStart
 
-from app.core.schemas import UserCreateS
-from app.repository.user import UserRepository
+from src.core.schemas import UserCreateS
+from src.repository.user import UserRepository
 
 if TYPE_CHECKING:
     from aiogram.types import Message

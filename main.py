@@ -7,11 +7,11 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.redis import RedisStorage
 
-from app.config import settings
-from app.core import db_manager
-from app.handlers.commands import router as commands_router
-from app.middlewares import SessionDepMiddleware, TextsDepMiddleware
-from app.utils.logger import configure_logging
+from src.config import settings
+from src.core import db_manager
+from src.handlers.commands import router as commands_router
+from src.middlewares import SessionDepMiddleware, TextsDepMiddleware
+from src.utils.logger import configure_logging
 
 log = logging.getLogger(__name__)
 

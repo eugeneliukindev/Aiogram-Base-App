@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any
 from sqlalchemy import URL, NullPool  # noqa
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-from app.config import settings
+from src.config import settings
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession

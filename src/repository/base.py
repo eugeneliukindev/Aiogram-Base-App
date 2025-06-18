@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import delete, insert, select, update
 
-from app.core.models import BaseOrm
-from app.repository import AbstractRepository
+from src.core.models import BaseOrm
+from src.repository import AbstractRepository
 
 if TYPE_CHECKING:
     from collections.abc import Sequence

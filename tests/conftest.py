@@ -12,10 +12,10 @@ from redis.asyncio.connection import parse_url as parse_redis_url
 from redis.exceptions import ConnectionError
 from sqlalchemy import NullPool, insert
 
-from app.config import settings
-from app.core.db_manager import DatabaseManager
-from app.core.models import BaseOrm, UserOrm
-from app.utils.texts import load_json_text
+from src.config import settings
+from src.core.db_manager import DatabaseManager
+from src.core.models import BaseOrm, UserOrm
+from src.utils.texts import load_json_text
 from tests.integration_tests.utils import MOCK_USERS
 from tests.mock_bot import MockedBot
 

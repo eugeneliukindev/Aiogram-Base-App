@@ -8,8 +8,8 @@ import pytest
 from aiogram.types import Message
 from sqlalchemy import select
 
-from app.core.models import UserOrm
-from app.handlers.commands import command_start_handler
+from src.core.models import UserOrm
+from src.handlers.commands import command_start_handler
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession

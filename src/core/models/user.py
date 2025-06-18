@@ -1,8 +1,8 @@
 from sqlalchemy import BigInteger, Boolean, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.core.models.base import BaseOrm
-from app.core.models.mixins import TimestampMixin
+from src.core.models.base import BaseOrm
+from src.core.models.mixins import TimestampMixin
 
 
 class UserOrm(BaseOrm, TimestampMixin):

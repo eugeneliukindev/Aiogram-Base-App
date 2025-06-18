@@ -3,10 +3,10 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from app.core.models import UserOrm
-from app.core.schemas import UserCreateS
-from app.core.schemas.user import UserUpdateS
-from app.repository.base import BaseRepository
+from src.core.models import UserOrm
+from src.core.schemas import UserCreateS
+from src.core.schemas.user import UserUpdateS
+from src.repository.base import BaseRepository
 
 if TYPE_CHECKING:
     from sqlalchemy import ScalarResult
