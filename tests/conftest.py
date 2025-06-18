@@ -9,15 +9,14 @@ import pytest_asyncio
 from _pytest.config import UsageError
 from aiogram import Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from redis.asyncio.connection import parse_url as parse_redis_url
 from redis.exceptions import ConnectionError
-from sqlalchemy import NullPool, insert
+from sqlalchemy import insert
 
-from src.config import BaseDatabaseConfig, settings
-from src.core.db_manager import DatabaseManager, db_manager
+from src.config import db_manager, settings
 from src.core.models import BaseOrm, UserOrm
 from src.utils.texts import load_json_text
+from tests.config import test_db_manager, test_settings
 from tests.integration_tests.utils import MOCK_USERS
 from tests.mock_bot import MockedBot
 
@@ -32,35 +31,6 @@ SKIP_MESSAGE_PATTERN = 'Need "--{db}" option with {db} URI to run'
 INVALID_URI_PATTERN = "Invalid {db} URI {uri!r}: {err}"
 
 BASE_DIR: Final[Path] = Path(__file__).resolve().parent.parent
-
-
-class TestDatabaseConfig(BaseDatabaseConfig):
-    pass
-
-
-class TestSettings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=(
-            BASE_DIR / ".env-template",
-            BASE_DIR / ".env",
-        ),
-        case_sensitive=False,
-        env_nested_delimiter="__",
-        env_prefix="APP_TEST_CONFIG__",
-        extra="ignore",
-    )
-    db: TestDatabaseConfig
-
-
-test_settings = TestSettings()
-
-
-test_db_manager = DatabaseManager(
-    url=test_settings.db.url,
-    echo=test_settings.db.echo,
-    echo_pool=test_settings.db.echo_pool,
-    poolclass=NullPool,  # Warning! Don't delete this param!
-)
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -98,12 +68,12 @@ async def session() -> AsyncGenerator[AsyncSession, None]:
 
 
 @pytest_asyncio.fixture()
-async def redis_storage(redis_server: Any) -> AsyncGenerator[RedisStorage, None]:
+async def redis_storage() -> AsyncGenerator[RedisStorage, None]:
     try:
-        parse_redis_url(redis_server)
+        parse_redis_url(test_settings.redis.url)
     except ValueError as e:
-        raise UsageError(INVALID_URI_PATTERN.format(db="redis", uri=redis_server, err=e)) from e
-    storage = RedisStorage.from_url(redis_server)
+        raise UsageError(INVALID_URI_PATTERN.format(db="redis", uri=test_settings.redis.url, err=e)) from e
+    storage = RedisStorage.from_url(test_settings.redis.url)
     try:
         await storage.redis.info()
     except ConnectionError as e:
