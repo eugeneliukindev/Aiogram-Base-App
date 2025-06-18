@@ -1,19 +1,21 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Any
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Final
 
 import pytest
 import pytest_asyncio
 from _pytest.config import UsageError
 from aiogram import Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from redis.asyncio.connection import parse_url as parse_redis_url
 from redis.exceptions import ConnectionError
 from sqlalchemy import NullPool, insert
 
-from src.config import settings
-from src.core.db_manager import DatabaseManager
+from src.config import BaseDatabaseConfig, settings
+from src.core.db_manager import DatabaseManager, db_manager
 from src.core.models import BaseOrm, UserOrm
 from src.utils.texts import load_json_text
 from tests.integration_tests.utils import MOCK_USERS
@@ -29,10 +31,34 @@ if TYPE_CHECKING:
 SKIP_MESSAGE_PATTERN = 'Need "--{db}" option with {db} URI to run'
 INVALID_URI_PATTERN = "Invalid {db} URI {uri!r}: {err}"
 
-db_test_manager = DatabaseManager(
-    url=settings.db_test.url,
-    echo=settings.db_test.echo,
-    echo_pool=settings.db_test.echo_pool,
+BASE_DIR: Final[Path] = Path(__file__).resolve().parent.parent
+
+
+class TestDatabaseConfig(BaseDatabaseConfig):
+    pass
+
+
+class TestSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=(
+            BASE_DIR / ".env-template",
+            BASE_DIR / ".env",
+        ),
+        case_sensitive=False,
+        env_nested_delimiter="__",
+        env_prefix="APP_TEST_CONFIG__",
+        extra="ignore",
+    )
+    db: TestDatabaseConfig
+
+
+test_settings = TestSettings()
+
+
+test_db_manager = DatabaseManager(
+    url=test_settings.db.url,
+    echo=test_settings.db.echo,
+    echo_pool=test_settings.db.echo_pool,
     poolclass=NullPool,  # Warning! Don't delete this param!
 )
 
@@ -46,14 +72,15 @@ def event_loop(request: SubRequest) -> Generator[AbstractEventLoop, None]:
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def prepare_db() -> AsyncGenerator[None, None]:
-    assert db_test_manager.engine.url == settings.db_test.url
-    assert settings.db_test.url != settings.db.url
+    assert test_settings.db.url != settings.db.url
+    assert test_db_manager.engine.url != db_manager.engine.url
+    assert test_settings.db.url == test_db_manager.engine.url
 
-    async with db_test_manager.engine.begin() as conn:
+    async with test_db_manager.engine.begin() as conn:
         await conn.run_sync(BaseOrm.metadata.drop_all)
         await conn.run_sync(BaseOrm.metadata.create_all)
 
-    async with db_test_manager.session_factory() as session:
+    async with test_db_manager.session_factory() as session:
         for mock_user in MOCK_USERS:
             stmt = insert(UserOrm).values(**mock_user)
             await session.execute(stmt)
@@ -61,12 +88,12 @@ async def prepare_db() -> AsyncGenerator[None, None]:
 
     yield
 
-    await db_test_manager.engine.dispose()
+    await test_db_manager.engine.dispose()
 
 
 @pytest_asyncio.fixture(scope="function")
 async def session() -> AsyncGenerator[AsyncSession, None]:
-    async with db_test_manager.session_factory() as session:
+    async with test_db_manager.session_factory() as session:
         yield session
 
 
